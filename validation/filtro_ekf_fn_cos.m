@@ -1,0 +1,102 @@
+addpath('../utils');
+warning('off', 'MATLAB:table:ModifiedAndSavedVarNames');
+clear
+close all
+clc
+
+run("variables.m")
+
+tic; % Start timer
+%------------------------- Constantes e dados ----------------------------%
+
+% Carregando o vetor com as medidas
+noise_samples = readtable('../simulations/noise_samples_cos.csv'); 
+noise_samples = noise_samples(1:52, :); 
+
+nAmostras = height(noise_samples);
+
+beta_ = BETA_0_SIM ; 
+
+eta_ = ETA_0_SIM ;
+
+% condições iniciais e matrizes de inicialização
+Ii0 = [10, 0,0 ];
+Ei_K = Ii0;
+Ii_K = Ii0; 
+Ri_K = [0, 0, 0];
+Si_K = N - Ei_K - Ii_K - Ri_K;
+
+Xi_K = cat(2, Si_K, Ei_K, Ii_K, beta_, eta_);
+
+Xi = NaN(TFINAL,15);
+
+Xi(1, :) = Xi_K; 
+
+P_K_K = P_K_K_COS;
+
+nEns = NENS; 
+
+X_ens = NaN(nEns, 15, nAmostras); 
+
+
+for a = 2:nAmostras
+    
+    [Q, R] = comp_Q_R_sim(a, Xi, noise_samples, 'cos');
+
+    measures = table2array(noise_samples(a,:));
+    
+    beta_pars = struct('estimate', true, 'name', 'beta_cos', 'zita', ZITAS, 'phi', PHIS, 'temp', a-1);
+
+    [Xi_K, P_K_K, X_ens_] = filter_ekf(beta_pars, EPSILON, Xi(a-1,:), P_K_K, Q, R, measures, nEns);
+
+    Xi(a, :) = Xi_K; 
+
+    X_ens(:, :, a) = X_ens_;
+
+end 
+elapsedTime = toc; % Stop timer and get elapsed time
+fprintf('Elapsed time: %.4f seconds\n', elapsedTime);
+
+writematrix(Xi, '../simulations/sim_EKF_cos.csv');
+%% MAKE PLOTS
+% colors = [
+%     1, 0, 0;      % Red
+%     0, 1, 0;      % Green
+%     0, 0, 1;      % Blue
+% ];
+
+% Set the color order for the current axes
+%set(gca, 'ColorOrder', colors, 'NextPlot', 'replacechildren');
+% %%
+% figure(1)
+% 
+% %noise_samples = readtable('noise_samples.csv'); 
+% 
+% plot(table2array(noise_samples), 'o')
+% hold on 
+% plot( TAU.*Xi(:, 4:6));
+% hold on
+% grid on 
+% %legend('Dados', 'Estimado')
+% 
+
+% %%
+% figure(2)
+% plot(Xi(:, 10:12))
+%% 
+
+%close all 
+%X_mean =  mean(squeeze(X_ens(:, 4, :))); 
+
+%X_std =  std(squeeze(X_ens(:, 4, :))); 
+
+%figure(1)
+
+%plot(X_mean)
+%hold on 
+%plot(X_mean + X_std)
+%plot(X_mean - X_std)
+
+
+
+
