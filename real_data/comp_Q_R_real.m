@@ -11,7 +11,7 @@ elseif isequal(beta_var,'mord')
     
 end 
  
-aux_ = max([5 5 5],(0.2*XHat1(a-1, 4:6)).^2);
+aux_ = max([5 5 5],(0.1*XHat1(a-1, 4:6)).^2);
 
 sigma = cat(2, [1000, 1000, 1000], aux_, aux_, var_noise);
 

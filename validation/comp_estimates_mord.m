@@ -61,8 +61,8 @@ legend_ekf= sprintf('EnKF (RMSE = %.2f·10^{-3})', 1000*rmse_ekf);
 legend_fp= sprintf('FP (RMSE = %.2f·10^{-3})', 1000*rmse_fp);
 
 legend('real', legend_ekf, legend_fp); 
-%title('a estimado', 'Interpreter', 'latex')
-ylabel('$a$', 'Interpreter', 'latex')
+title(strcat(sprintf('$a^{%d}$', i), ' estimado'), 'Interpreter', 'latex')
+ylabel(sprintf('$a$', i), 'Interpreter', 'latex', 'FontSize',14)
 xlabel('Semana')
 end 
 

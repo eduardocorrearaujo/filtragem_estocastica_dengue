@@ -82,7 +82,7 @@ legend_ekf= sprintf('EnKF (RMSE = %.2f)', rmse_ekf);
 legend_fp= sprintf('FP (RMSE = %.2f)', rmse_fp);
 
 legend('Real', legend_ekf, legend_fp, 'Location', 'best'); 
-title('\beta_0 estimado')
+title(sprintf('\\beta_{0}^{%d} estimado', i), 'Interpreter', 'tex');
 xlabel('Semana')
 
 % serie temporal dos valores de eta estimados 
@@ -103,9 +103,9 @@ legend_ekf= sprintf('EnKF (RMSE = %.2f)', rmse_ekf);
 legend_fp= sprintf('FP (RMSE = %.2f)', rmse_fp);
 
 legend('Real', legend_ekf, legend_fp, 'Location', 'best'); 
-title('\eta estimado')
+title(sprintf('$\\eta^{%d}$ estimado', i), 'Interpreter','latex')
 xlabel('Semana')
-ylabel('\eta')
+%ylabel('\eta')
 end 
 
 %title('Estimate parameters')
@@ -137,9 +137,9 @@ legend_fp= sprintf('FP (RMSE = %.2f)', rmse_fp);
 
 legend('Real', legend_ekf, legend_fp, 'Location', 'best'); 
 %title('\beta_{k}^{1} estimado')
-title(cities{i})
+title(strcat(cities{i}, '-', 'MSEI_1'))
 xlabel('Semana')
-ylabel('\beta_{k}^{1}')
+ylabel('\beta')
 end 
 
 %title('Estimate parameters')

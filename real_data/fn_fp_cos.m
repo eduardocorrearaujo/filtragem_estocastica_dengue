@@ -55,7 +55,7 @@ n_ = NaN(nAmostras, 1);
 n_(1,1) = 1.5; 
 
 for a = 2:nAmostras
-    disp(a)
+    %disp(a)
     [Q, R] = comp_Q_R_real(a, XHat1, noise_samples, 'cos');
 
     measures = noise_samples(a,:);
