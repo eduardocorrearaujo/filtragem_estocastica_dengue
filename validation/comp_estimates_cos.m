@@ -73,7 +73,7 @@ hold on
 plot(beta_fp(:, 9+i), 'Color', 'red')
 grid on 
 hold on 
-ylabel('\beta_0')
+ylabel(sprintf('\\beta_0^{%d}', i))
 
 rmse_ekf = sqrt(sum((betas(:,i)- beta_ekf(:, 9+i)).^2) / n);
 rmse_fp = sqrt(sum((betas(:,i)- beta_fp(:, 9+i)).^2) / n);
@@ -104,12 +104,14 @@ legend_fp= sprintf('FP (RMSE = %.2f)', rmse_fp);
 
 legend('Real', legend_ekf, legend_fp, 'Location', 'best'); 
 title(sprintf('$\\eta^{%d}$ estimado', i), 'Interpreter','latex')
+title(sprintf('\\eta^{%d} %s', i, 'estimado'), 'Interpreter', 'tex');
+
 xlabel('Semana')
-%ylabel('\eta')
+ylabel(sprintf('\\eta^{%d}', i))
 end 
 
 %title('Estimate parameters')
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 18 12])
+set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12.5])
 print(gcf, '../figures/results_sim_cos.png', '-dpng'); % Saves tightly
 
 
